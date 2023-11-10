@@ -1,11 +1,13 @@
 const c = canvas.getContext('2d');
-const gravity = 0.5;
+const gravity = 0.3;
 export default class Sprite{
-constructor(position){
-    this.position = position;
-    this.width = 50;
-    this.height = 150;
-    this.velocity = {x: 0, y: gravity};
+constructor(position, type, path){
+    this.position = position;//define posição do sprite no canvas
+    this.width = 50;//define largura do sprite
+    this.height = 150;//define altura do sprite
+    this.velocity = {x: 0, y: 0};//define velocidade do eixo x e y
+    this.type = type;//define se é tipo player ou tipo enemy
+    this.path = path;//path da pasta raiz para os sprites
 }
 
     draw(){
@@ -13,16 +15,34 @@ constructor(position){
         c.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
 
-    update(){
+    update(keys){
+        let keyArray = keys;
         this.draw();
-
-        if(this.position.x + this.width >= canvas.width){
-            this.velocity.x = 0;
-        } else this.position.x += this.velocity;
-        if(this.position.y >= canvas.height){
+        this.velocity.y += gravity;
+        this.position.y += this.velocity.y;
+        this.position.x += this.velocity.x;
+        
+        //detecta colisão com o chão
+        const gravPull = ()=>{if(this.position.y + this.height > canvas.height){
             this.velocity.y = 0;
-        } else this.position.y += this.gravity;
+            this.position.y = canvas.height - this.height;
+        }}
+
+        //controle de input do player
+        if(this.type == 1){
+            if(keyArray.includes('w')){
+                this.velocity.y -= -10;
+            }if(keyArray.includes('a')){
+                this.velocity.x = -1;
+            }else if(keyArray.includes('d')){
+                this.velocity.x = 1;
+            }else{
+                this.velocity.x = 0;
+            }
+        }
+        gravPull()
     }
+
 
     // constructor(image, width, height, x, y){
     //     this.image = image;
@@ -37,4 +57,5 @@ constructor(position){
     // update(){
     //     this.x += 1;
     //     this.y += 1;
+    // }
 }
