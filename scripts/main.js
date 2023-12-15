@@ -1,20 +1,22 @@
 import Sprite from './Sprite.js'
+import Player from './Player.js'
+import Npc from './Npc.js'
 
-const canvas = document.querySelector('canvas');
+export const canvas = document.querySelector('canvas');
 export const c = canvas.getContext('2d');
 
-canvas.width = 1024;
-canvas.height = 480;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 c.fillRect(0,0, canvas.width, canvas.height);
 
 
 // Instanciando jogador e inimigo:
-const player = new Sprite({x: 100, y: 100}, 1, 'assets/sprites');
-console.log(player.position.x);
+const player = new Player({x: 150, y: 400}, 1, 'assets/sprites');
+console.log("Player:" + player.position.x);
 
-const enemy = new Sprite({x: 200, y: 200}, 2, 'assets/sprites');
-console.log(enemy.position.x);
+const enemy = new Npc({x: 350, y: 400}, 2, 'assets/sprites');
+console.log("Enemy:" + enemy.position.x);
 
 //Captura de teclas
 let keys = [];
@@ -38,9 +40,9 @@ function animate(){
     c.fillRect(0, 0, canvas.width, canvas.height);
     player.update(keys);
     enemy.update();
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animate)
 }
-animate();
+setTimeout(animate(), 1000)
 
 
 
