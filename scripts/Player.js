@@ -71,6 +71,7 @@ export default class Player extends Sprite {
   }
 
   update(keys) {
+    this.loadState()
     this.frameUpdate();
     let keyArray = keys;
     //this.drawSprite();
